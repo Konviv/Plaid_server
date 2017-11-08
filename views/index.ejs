@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Konviv MVP</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+        body {
+         font-family: 'Open Sans', sans-serif;
+           background-image: url('https://github.com/Konviv/konviv.github.io/blob/master/img/white.jpg?raw=true');
+           background-position: center;
+           /* Set a specific height */
+           height: 500px;
+           /* Create the parallax scrolling effect */
+           background-attachment: fixed;
+           background-position: center;
+           background-repeat: no-repeat;
+           background-size: cover;
+        }
+        </style>
+    </head>
+    <body>
+
+        <div id="menu">
+                   <div class="box">
+                       <button class="headerbutton" id="get-accounts-btn"><img src="https://github.com/Konviv/konviv.github.io/blob/master/img/icon1.png?raw=true" alt="Transactions" desc="Transactions" style="width:85px;"><br />
+                       <p style="margin-top:-5px; font-size:10px; color:#222;">Accounts</p></button>
+                       <button class="headerbutton" id="get-transactions-btn"><img src="https://github.com/Konviv/konviv.github.io/blob/master/img/icon2.png?raw=true" alt="Transactions" desc="Transactions" style="width:85px;"><br /><p style="margin-top:-5px; font-size:10px; color:#222;">Transactions</p></button>
+                       <button class="headerbutton" id="get-link-btn"><img src="https://github.com/Konviv/konviv.github.io/blob/master/img/icon3.png?raw=true" alt="Transactions" desc="Transactions" style="width:85px;"><br /><p style="margin-top:-5px; font-size:10px; color:#222;">Edit Bank</p></button>
+                       <button class="logout-btn headerbutton"><img src="https://github.com/Konviv/konviv.github.io/blob/master/img/icon4.png?raw=true" alt="Transactions" desc="Transactions" style="width:85px;"><br /><p style="margin-top:-5px; font-size:10px; color:#222;">Logout</p></button>
+                   </div>
+                   <div id="get-button-data"></div>
+               </div>
+
+               <div class ="box" style="background-color:white;">
+                   <div class="head">
+                       <h1> Amount Left <h1>
+                   </div>
+                   <div class = "body">
+                        <div id="left-to-spend">
+                            loading
+                        </div>
+                        <div id="string"> total amount left to spend for the month</div>
+                   </div>
+               </div>
+
+               <div class="box">
+                   <div class = "body">
+                       <div class = "head">
+                           <h1> Monthly Spending Buckets </h1>
+                       </div>
+                       <div class = "wrap">
+                           <div id = "total-spending">
+                               loading
+                           </div>
+                           <div class="circle" id="Variable Bills">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Eating Out">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Entertainment">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Groceries">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Other Spending">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Shopping">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                           <div class="circle" id="Transportation">
+                               <div class="perc">
+                                   <div class="perc-value"></div>
+                               </div>
+                               <span class="top"></span>
+                               <span class="bottom"></span>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+        <div class ="box">
+            <div class="head">
+                <h1> Emergency Savings Goal </h1>
+            </div>
+            <div class = "body">
+                <div id = "Savings Account">
+                    <div class="wrap-savings">
+                        <div class="circle-savings" id="Emergency Savings">
+                            <div class="perc-savings">
+                                <div class="perc-value-savings"></div>
+                            </div>
+                            <span class="top-savings"></span>
+                            <span class="bottom-savings"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class = "monthNumber" id="string"> </div>
+        </div>
+
+        <div id="menu">
+            <div class="box">
+                <button class="headerbutton" style="margin:10px 10px 10px 14px;" id="threeMonths"><span style="font-size:18px; color:#222;">3 Months</span></button>
+                <button class="headerbutton" style="margin:10px 10px;" id="sixMonths"><span style="font-size:18px; color:#222;">6 Months</span></button>
+                <button class="headerbutton" style="margin:10px 10px;" id="nineMonths"><span style="font-size:18px; color:#222;">9 Months</span></button>
+                <button class="headerbutton" style="margin:10px 10px;" id="twelveMonths"><span style="font-size:18px; color:#222;">12 Months</span></button>
+            </div>
+        </div>
+
+        <div class ="box">
+            <div class="head">
+                <h1> Monthly Fixed Bills</h1>
+            </div>
+            <div class = "body">
+                <div id = "monthly-fixed-bills">
+                    <div id = "total-bills">
+                        loading
+                    </div>
+                    <div class="wrap-bills">
+                        <div class="circle-bills" id="Housing">
+                            <div class="perc-bills">
+                                <div class="perc-value-bills"></div>
+                            </div>
+                            <span class="top-bills">Housing</span>
+                            <span class="bottom-bills"></span>
+                        </div>
+
+                        <div class="circle-bills" id="Loans">
+                            <div class="perc-bills">
+                                <div class="perc-value-bills"></div>
+                            </div>
+                            <span class="top-bills">Loans</span>
+                            <span class="bottom-bills"></span>
+                        </div>
+                        <div class="circle-bills" id="Insurance">
+                            <div class="perc-bills">
+                                <div class="perc-value-bills"></div>
+                            </div>
+                            <span class="top-bills">Insurance</span>
+                            <span class="bottom-bills"></span>
+                        </div>
+                        <div class="circle-bills" id="Subscriptions">
+                            <div class="perc-bills">
+                                <div class="perc-value-bills"></div>
+                            </div>
+                            <span class="top-bills">Subscriptions</span>
+                            <span class="bottom-bills"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class ="box">
+            <div class="head">
+                <h1> Monthly Income <h1>
+            </div>
+
+            <div class="body">
+                <div id="monthly-income" style="cursor: pointer;">
+                    loading
+                </div>
+                <div id="string">
+                    amount of money received this month so far
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+        <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.1.4/firebase.js"></script>
+
+        <script>
+            var defaultTimePeriod = 6;
+            if (sessionStorage.getItem('bucketPage')) {
+                console.log('not on specific bucket page');
+                sessionStorage.removeItem('bucketPage');
+            }
+            if (sessionStorage.getItem('token')) {
+                console.log('currently logged in');
+            } else {
+                location.href='/';
+                console.log('currently logged out');
+            }
+            // Initialize Firebase
+            var config = {
+                apiKey: "AIzaSyASB9RhrUzNme-rGkVrzEXmF3nL7PwMgvQ",
+                authDomain: "konvivandroid.firebaseapp.com",
+                databaseURL: "https://konvivandroid.firebaseio.com",
+                projectId: "konvivandroid",
+                storageBucket: "konvivandroid.appspot.com",
+                messagingSenderId: "41760220514"
+            };
+            firebase.initializeApp(config);
+            function logOutSuccess(logout) {
+                if (logout == true) {
+                    location.href='/';
+                    console.log('currently logged out');
+                } else {
+                    console.log('unable to log out');
+                    console.log('token: ' + sessionStorage.getItem('token'));
+                }
+            };
+            var buttonValue = '';
+            var handler = Plaid.create({
+                apiVersion: 'v2',
+                clientName: 'Konviv MVP',
+                env: 'development',
+                product: ['transactions'],
+                key: '9f4ef21fdb37b5c0e3f80290db7716',
+                onSuccess: function(public_token) {
+                    // alert('calling /get_access_token...')
+                    $.post('/get_access_token', {
+                        token: sessionStorage.getItem("token"),
+                        publicToken: public_token,
+                        userId: sessionStorage.getItem("userId")
+                    }, function() {
+                        location.href="index.ejs";
+                    });
+                }
+            });
+            //Bucket Functionalities START here...
+            function openBucketPage(bucketPage) {
+                console.log(bucketPage);
+                return function () {
+                    console.log(bucketPage);
+                    sessionStorage.setItem('bucketPage', bucketPage);
+                    location.href = '/bucketpage.ejs';
+                }
+            }
+            //  Bucket Functionalities END here...
+            // RESTful calls to index.js server using post function
+            function savingsCall(timePeriod) {
+                $.post('/savings', {
+                    token: sessionStorage.getItem('token'),
+                    months: timePeriod
+                }, function(data) {
+                    // Catching error
+                    if (data.error != null) {
+                        if (data.message == 'Failed to authenticate token.') {
+                            sessionStorage.clear();
+                            location.href = '/';
+                        }
+                        // Format the error
+                        var errorHtml = '<div class="inner"><p><strong>' + data.error.message + '</strong></p></div>';
+                        // Render the error
+                        $('#get-button-data').slideUp(function() {
+                            $(this).slideUp(function() {
+                                $(this).html(errorHtml).slideDown();
+                            });
+                        });
+                        // Using for loop to pull information for each bucket from data
+                    } else {
+                        console.log(data)
+                        var bucket = data;
+                        var fillPercent = 0;
+                        // Accounting for divide-by-zero error
+                        if (bucket['Total'] > 0) {
+                            fillPercent = 100 - (bucket['Savings']/bucket['Total'])*100
+                        }
+                        bucketSavings = Math.round(bucket['Savings']*100)/100;
+                        bucketTotal = Math.round(bucket['Total']*100)/100;
+                        newPercent = fillPercent;
+                        var selector = "[id='Savings Account']";
+                        $(selector)
+                            .find(".top-savings").text("Savings Account").end()
+                            .find(".bottom-savings").text("$" + bucketSavings + " of $" + bucketTotal).end()
+                            .find(".perc-value-savings").css("height", newPercent + "%")
+                        $(monthNumber).text("emergency savings goal for " + timePeriod + " months of living expenses (set below)");
+                        // document.getElementById('Savings Account').setAttribute("onclick", "location.href='bucketpage.ejs'");
+                    }
+                });
+            }
+            savingsCall(defaultTimePeriod);
+            $.post('/names', {
+                token: sessionStorage.getItem('token')
+            }, function(data) {
+                if (data.error != null) {
+                    if (data.message == 'Failed to authenticate token.') {
+                        sessionStorage.clear();
+                        location.href = '/';
+                    }
+                    // Format the error
+                    var errorHtml = '<div class="inner"><p><strong>' + data.error.message + '</strong></p></div>';
+                    // Render the error
+                    $('#get-button-data').slideUp(function() {
+                        $(this).slideUp(function() {
+                            $(this).html(errorHtml).slideDown();
+                        });
+                    });
+                    // Using for loo
+                } else {
+                    for (var key in data) {
+                        var selector = '[id="' + key + '"]';
+                        $(selector).find('.top-bills,.top').text(data[key]['name']).end();
+                        sessionStorage.setItem(key, data[key]['name']);
+                    }
+                }
+            });
+            $.post('/buckets', {
+                token: sessionStorage.getItem('token')
+            }, function(data) {
+                // Catching error
+                if (data.error != null) {
+                    if (data.message == 'Failed to authenticate token.') {
+                        sessionStorage.clear();
+                        location.href = '/';
+                    }
+                    // Format the error
+                    var errorHtml = '<div class="inner"><p><strong>' + data.error.message + '</strong></p></div>';
+                    // Render the error
+                    $('#get-button-data').slideUp(function() {
+                        $(this).slideUp(function() {
+                            $(this).html(errorHtml).slideDown();
+                        });
+                    });
+                    // Using for loop to pull information for each bucket from data
+                } else {
+                    console.log(data)
+                    var totalBills = 0;
+                    var totalSpending= 0;
+                    for (var bucketClass in data) {
+                        totalAmount=0;
+                        for (var key in data[bucketClass]) {
+                            if (data[bucketClass].hasOwnProperty(key)) {
+                                var bucket = data[bucketClass][key];
+                                var fillPercent = 0;
+                                // Accounting for divide-by-zero error
+                                if (bucket['Total'] > 0) {
+                                    fillPercent = (bucket['Spending']/bucket['Total'])*100
+                                }
+                                bucketSpent = Math.round((bucket['Total'] - bucket['Spending'])*100)/100;
+                                bucketTotal = Math.round(bucket['Total']*100)/100;
+                                newPercent = fillPercent;
+                                var selector = '[id="' + key + '"]';
+                                $(selector)
+                                    // .find(".top-bills,.top").text(key).end()
+                                    .find(".bottom-bills,.bottom").text("$" + bucketSpent + " of $" + bucketTotal).end()
+                                    .find(".perc-value-bills,.perc-value").css("height", newPercent + "%")
+                                $(selector)
+                                    .on('click', openBucketPage(key));
+                                /*edit: bucketTotal*/
+                                totalAmount += bucketSpent;
+                                if (bucketClass == 'Fixed Buckets'){
+                                    totalBills += data[bucketClass][key]['Total'];
+                                } else if (bucketClass == 'Spending Buckets'){
+                                    totalSpending += data[bucketClass][key]['Total'];
+                                }
+                            }
+                        }
+                    }
+                    /* INCOME CLASS */
+                    income = -(data['Income Buckets']['Income']['Spending'])
+                    $("#monthly-income").text("$" + income.toFixed(2))
+                    $("#monthly-income").on('click', openBucketPage('Income'));
+                    var Amountleft = income - totalBills - totalSpending;
+                    $("#left-to-spend").text("$" + Amountleft.toFixed(2));
+                    $("#total-bills").text("Total Bills: $" +totalBills.toFixed(2));
+                    $("#total-spending").text("Total Spending: $" +totalSpending.toFixed(2));
+                }
+           });
+           (function($) {
+               monthNumber ='[class="monthNumber"]'
+               $('#threeMonths').on('click', function(e) {
+                   savingsCall(3);
+               });
+               $('#sixMonths').on('click', function(e) {
+                   savingsCall(6);
+               });
+               $('#nineMonths').on('click', function(e) {
+                   savingsCall(9);
+               });
+               $('#twelveMonths').on('click', function(e) {
+                   savingsCall(12);
+               });
+               $('#get-link-btn').on('click', function(e) {
+                   handler.open()
+               });
+               $('.logout-btn').on('click', function(e) {
+                   console.log("logging out...");
+                   sessionStorage.clear();
+                   logOutSuccess(true)
+                });
+                $('#get-accounts-btn').on('click', function(e) {
+                    if ($('#get-button-data').is(':visible') && buttonValue == "account") {
+                        buttonValue = "";
+                        return $('#get-button-data').slideUp();
+                    }
+                    console.log('accounts called...')
+                    $.post('/accounts', {
+                        token: sessionStorage.getItem('token')
+                    }, function(data) {
+                        console.log("Account info: " + data)
+                        buttonValue = "account";
+                        $('#get-button-data').slideUp(function() {
+                            var html = '<div class="inner">';
+                            // html += '<p><b>BASIC INFORMATION ABOUT YOUR BANK ACCOUNT<b></p> <br>';
+                            html += '<p><strong>Bank Account: </strong> ' + data.institution.name + '</p>';
+                            html += '<p>Billed products: ' + data.item.billed_products.join(', ') + '</p>';
+                            html += '<p>Available products: ' + data.item.available_products.join(', ') + '</p>';
+                            html += '<br>';
+                            data.accounts.forEach(function(account, idx) {
+                                // html += '<div class="inner">';
+                                html += '<strong>' + account.name +
+                                ' $' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</strong><br>';
+                                html += account.subtype + ' ' + account.mask;
+                                // html += '</div>';
+                                html += '<br>';
+                            });
+                            html += '</div>';
+                            $(this).html(html).slideDown();
+                        });
+                    });
+                });
+                $('#get-item-btn').on('click', function(e) {
+                    if ($('#get-button-data').is(':visible') && buttonValue == "item") {
+                        buttonValue = "";
+                        return $('#get-button-data').slideUp();
+                    }
+                    $.post('/item', {
+                        token: sessionStorage.getItem('token')
+                    }, function(data) {
+                        buttonValue = "item";
+                        $('#get-button-data').slideUp(function() {
+                            if (data.error) {
+                                $(this).html('<p>' + data.error + '</p>').slideDown();
+                            } else {
+                                var html = '<div class="inner">';
+                                // html += '<p><b>BASIC INFORMATION ABOUT YOUR BANK ACCOUNT<b></p> <br>';
+                                html += '<p><b>Bank Account</b> ' + data.institution.name + '</p>';
+                                // html += '<p>Billed products: ' + data.item.billed_products.join(', ') + '</p>';
+                                // html += '<p>Available products: ' + data.item.available_products.join(', ') + '</p>';
+                                html += '</div>';
+                                $(this).html(html).slideDown();
+                            }
+                        });
+                    });
+                });
+                $('#get-transactions-btn').on('click', function(e) {
+                    if ($('#get-button-data').is(':visible') && buttonValue == "transactions") {
+                        buttonValue = "";
+                        return $('#get-button-data').slideUp();
+                    }
+                    $.post('/transactions', {
+                        token: sessionStorage.getItem('token')
+                    }, function(data) {
+                        buttonValue = "transactions";
+                        if (data.error != null) {
+                            // Format the error
+                            var errorHtml = '<div class="inner"><p>' +
+                            '<strong>' + data.error.error_code + ':</strong> ' +
+                            data.error.error_message + '</p></div>';
+                            if (data.error.error_code === 'PRODUCT_NOT_READY') {
+                                // Add additional context for `PRODUCT_NOT_READY` errors
+                                errorHtml += '<div class="inner"><p>The PRODUCT_NOT_READY ' +
+                                'error is returned when a request to retrieve Transaction data ' +
+                                'is made before Plaid finishes the <a href="https://plaid.com/' +
+                                'docs/quickstart/#transaction-data-with-webhooks">initial ' +
+                                'transaction pull.</a></p></div>';
+                            }
+                            // Render the error
+                            $('#get-button-data').slideUp(function() {
+                                $(this).slideUp(function() {
+                                    $(this).html(errorHtml).slideDown();
+                                });
+                            });
+                        } else {
+                            $('#get-button-data').slideUp(function() {
+                                var html = '';
+                                data.transactions.forEach(function(txn, idx) {
+                                    //code for displaying category for each transaction
+                                    html += '<div class="inner">';
+                                    html += '<strong>' + txn.name + '</strong><br>';
+                                    html += '<em>' + txn.bucket + '</em><br>';
+                                    html += '$' + txn.amount + '<br>';
+                                    html += '<em>' + txn.date + '</em>';
+                                    html += '</div>';
+                                });
+                                $(this).slideUp(function() {
+                                    $(this).html(html).slideDown();
+                                });
+                            });
+                        }
+                    });
+                });
+            })(jQuery);
+        </script>
+    </body>
+</html>

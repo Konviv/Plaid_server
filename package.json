@@ -1,0 +1,22 @@
+{
+  "name": "testplaid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "envvar": "^2.0.0",
+    "express": "^4.16.2",
+    "moment": "^2.19.1",
+    "mysql": "^2.15.0",
+    "nodemon": "^1.12.1",
+    "plaid": "^2.1.0",
+    "scriptjs": "^2.5.8"
+  }
+}
