@@ -8,11 +8,11 @@ var mysql = require('mysql');
 
 
 // Begin Plaid code for configuration, initialization, and authentication
-var APP_PORT = envvar.number('APP_PORT', Number(process.env.PORT || 3001));
+var APP_PORT = envvar.number('APP_PORT', Number(process.env.PORT || 4001));
 var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','57c4acc20259902a3980f7d2');
 var PLAID_SECRET = envvar.string('PLAID_SECRET','10fb233c2a93dfcd42aa1a9d8a01d1');
 var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','ebc098404b162edaadb2b8c6c45c8f');
-var PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
+var PLAID_ENV = envvar.string('PLAID_ENV', 'development');
 
 
 // We store the access_token in memory - in production, store it in a secure
@@ -58,14 +58,7 @@ app.get('/', function(request, response, next) {
 });
 
 
-app.get('/link', function(request, response, next) {
-    console.log("app loading...");
-    response.render('plaid.ejs', {
-        PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
-        PLAID_ENV: PLAID_ENV,
-    });
-    console.log("app loaded");
-});
+
 
 app.post('/get_access_token', function(request, response, next) {
     PUBLIC_TOKEN = request.body.public_token;
@@ -90,7 +83,7 @@ app.post('/get_access_token', function(request, response, next) {
   });
 
 
-  app.get('/accounts', function(request, response, next) {
+  app.post('/accounts', function(request, response, next) {
     // Retrieve high-level account information and account and routing numbers
     // for each account associated with the Item.
     client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
@@ -114,26 +107,26 @@ app.post('/get_access_token', function(request, response, next) {
       
       
       //database connection start
-      console.log("test data"+authResponse.accounts[0].name);   
+    //   console.log("test data"+authResponse.accounts[0].name);   
       
-      var jsondata = authResponse.accounts;
-      var values = [];
+    //   var jsondata = authResponse.accounts;
+    //   var values = [];
       
-      for(var i=0; i< jsondata.length; i++)
-        values.push([, jsondata[i].account_id, jsondata[i].balances, jsondata[i].mask, jsondata[i].official_name, jsondata[i].subtype, jsondata[i].type ] );
+    //   for(var i=0; i< jsondata.length; i++)
+    //     values.push([, jsondata[i].account_id, jsondata[i].balances, jsondata[i].mask, jsondata[i].official_name, jsondata[i].subtype, jsondata[i].type ] );
       
-      connection.connect(function(err) {
-        console.log("Connected!");
-        // connection.query('INSERT INTO accountsTableTest (id, account_id, balances, mask, official_name, subtype, type) VALUES ?', [values], function(err,result) {
-        //         console.log("successful for insert");
-        //   });
+    //   connection.connect(function(err) {
+    //     console.log("Connected!");
+    //     connection.query('INSERT INTO accountsTableTest (id, account_id, balances, mask, official_name, subtype, type) VALUES ?', [values], function(err,result) {
+    //             console.log("successful for insert");
+    //       });
       
-      connection.query("SELECT * FROM accountsTableTest", function (err, result, fields) {
-        if (err) throw err;
-         console.log("query successful");
-         console.log(result);
-     });
-     });
+    //   connection.query("SELECT * FROM accountsTableTest", function (err, result, fields) {
+    //     if (err) throw err;
+    //      console.log("query successful");
+    //      console.log(result);
+    //  });
+    //  });
       //database connnection end
     });
   });
@@ -143,7 +136,35 @@ app.post('/get_access_token', function(request, response, next) {
     return response.redirect('http://localhost:8100');
   });
 
+var user_id=1;
+app.post('/item', function(request, response, next) {
+  // Pull the Item - this includes information about available products,
+  // billed products, webhook information, and more.
+  client.getItem(ACCESS_TOKEN, function(error, itemResponse) {
+    if (error != null) {
+      console.log(JSON.stringify(error));
+      return response.json({
+        error: error
+      });
+    }
 
+    // Also pull information about the institution
+    client.getInstitutionById(itemResponse.item.institution_id, function(err, instRes) {
+      if (err != null) {
+        var msg = 'Unable to pull institution information from the Plaid API.';
+        console.log(msg + '\n' + error);
+        return response.json({
+          error: msg
+        });
+      } else {
+        response.json({
+          item: itemResponse.item,
+          institution: instRes.institution,
+        });
+      }
+    });
+  });
+});
 
 
   app.post('/transactions', function(request, response, next) {
@@ -171,18 +192,18 @@ app.post('/get_access_token', function(request, response, next) {
             for(var i=0; i< jsondata.length; i++)
               {
               if(jsondata[i].category != null)
-              values.push([jsondata[i].account_id, jsondata[i].amount, jsondata[i].date, jsondata[i].name, jsondata[i].category_id, jsondata[i].category[0]] );
+              values.push([jsondata[i].account_id, jsondata[i].amount, jsondata[i].date, jsondata[i].name, jsondata[i].category[0],jsondata[i].category_id, user_id] );
               else
                 {
-                  values.push([jsondata[i].account_id, jsondata[i].amount, jsondata[i].date, jsondata[i].name, jsondata[i].category_id, "other"]);
+                  values.push([jsondata[i].account_id, jsondata[i].amount, jsondata[i].date, jsondata[i].name, "other", jsondata[i].category_id,user_id]);
                 }
               }
-            console.log(values);
+            console.log("values");
 
             connection.connect(function(err) {
                 if (err) throw err;
               console.log("Connected!");
-              connection.query('INSERT INTO transactionTableTest (account_id, amount, date, name, category_id, category ) VALUES ?', [values], function(err,result) {
+              connection.query('INSERT INTO transactionsTable (account_id, amount, date, name, category,category_id, user_id ) VALUES ?', [values], function(err,result) {
                 if (err) throw err;
                 console.log("successful for insert for transaction");
                 });

@@ -34,18 +34,22 @@
       <button id="get-accounts-btn">Get Accounts</button>
       <div id="get-accounts-data"></div>
     </div>
-    <button id="link-btn-back">GO BACK TO Application</button>
-    <a href="http://localhost:8100">External</a>
 
     <div class="box">
       <button id="get-item-btn">Get Item</button>
       <div id="get-item-data"></div>
     </div>
 
+ 
+
+
     <div class="box">
       <button id="get-transactions-btn">Get Transactions</button>
       <div id="get-transactions-data"></div>
     </div>
+
+    <button id="link-btn-back">GO BACK TO Application</button>
+    <a href="http://localhost:8100">External</a>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
@@ -87,6 +91,8 @@
 
     $('#get-accounts-btn').on('click', function(e) {
       $.get('/accounts', function(data) {
+        console.log("Account info: " + data)
+        buttonValue = "account";
         $('#get-accounts-data').slideUp(function() {
           var html = '';
           data.accounts.forEach(function(account, idx) {
