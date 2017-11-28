@@ -46,6 +46,7 @@ var connection = mysql.createConnection({
   });
 
 var apiRoutes = express.Router();
+var user_id;
 
 // Here is where we define actual RESTful calls, using Express:
 app.get('/', function(request, response, next) {
@@ -58,7 +59,16 @@ app.get('/', function(request, response, next) {
 });
 
 
-
+app.get('/:user_id', function(request, response, next) {
+  user_id = request.param.user_id;
+  console.log("plaid user id: ", user_id);
+  console.log("request: ", request);
+    response.render('plaid.ejs', {
+        PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
+        PLAID_ENV: PLAID_ENV,
+    });
+    console.log("app loaded");
+});
 
 app.post('/get_access_token', function(request, response, next) {
     PUBLIC_TOKEN = request.body.public_token;
