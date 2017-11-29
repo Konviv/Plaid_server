@@ -9,9 +9,9 @@ var mysql = require('mysql');
 
 // Begin Plaid code for configuration, initialization, and authentication
 var APP_PORT = envvar.number('APP_PORT', Number(process.env.PORT || 4001));
-var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','57c4acc20259902a3980f7d2');
-var PLAID_SECRET = envvar.string('PLAID_SECRET','10fb233c2a93dfcd42aa1a9d8a01d1');
-var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','ebc098404b162edaadb2b8c6c45c8f');
+var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','59d961ce4e95b833dcb75e3c');
+var PLAID_SECRET = envvar.string('PLAID_SECRET','3cd9b652e3d0bd9977b5e558046f7c');
+var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','1ba24d7f24b413a578c4e8e52309a8');
 var PLAID_ENV = envvar.string('PLAID_ENV', 'development');
 
 
@@ -181,7 +181,7 @@ app.post('/item', function(request, response, next) {
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
 
-      user_id = request.params.user_id;
+      user_id = 90;//request.params.user_id;
       console.log("plaid transactions user id: ", user_id);
 
       client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
