@@ -60,14 +60,13 @@ app.get('/', function(request, response, next) {
 
 
 app.get('/:user_id', function(request, response, next) {
-  user_id = request.param.user_id;
+  user_id = request.params.user_id;
   console.log("plaid user id: ", user_id);
-  console.log("request: ", request);
+  console.log("request.params: ", request.params);
     response.render('plaid.ejs', {
         PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
         PLAID_ENV: PLAID_ENV,
     });
-    console.log("app loaded");
 });
 
 app.post('/get_access_token', function(request, response, next) {
@@ -146,7 +145,7 @@ app.post('/get_access_token', function(request, response, next) {
     return response.redirect('http://localhost:8100');
   });
 
-var user_id=1;
+// var user_id=1;
 app.post('/item', function(request, response, next) {
   // Pull the Item - this includes information about available products,
   // billed products, webhook information, and more.
@@ -181,7 +180,11 @@ app.post('/item', function(request, response, next) {
     // Pull transactions for the Item for the last 30 days
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
-    client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
+
+      user_id = request.params.user_id;
+      console.log("plaid transactions user id: ", user_id);
+
+      client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
       count: 250,
       offset: 0,
     }, function(error, transactionsResponse) {
