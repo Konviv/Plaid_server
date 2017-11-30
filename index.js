@@ -60,9 +60,10 @@ app.get('/', function(request, response, next) {
 
 
 app.get('/:user_id', function(request, response, next) {
-  user_id = request.params.user_id;
+  if (!isNaN(request.params.user_id)) {
+      user_id = request.params.user_id;
+  }
   console.log("plaid user id: ", user_id);
-  console.log("request.params: ", request.params);
     response.render('plaid.ejs', {
         PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
         PLAID_ENV: PLAID_ENV,
