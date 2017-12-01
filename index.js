@@ -9,9 +9,9 @@ var mysql = require('mysql');
 
 // Begin Plaid code for configuration, initialization, and authentication
 var APP_PORT = envvar.number('APP_PORT', Number(process.env.PORT || 4001));
-var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','57c4acc20259902a3980f7d2');
-var PLAID_SECRET = envvar.string('PLAID_SECRET','10fb233c2a93dfcd42aa1a9d8a01d1');
-var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','ebc098404b162edaadb2b8c6c45c8f');
+var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','59d961ce4e95b833dcb75e3c');
+var PLAID_SECRET = envvar.string('PLAID_SECRET','3cd9b652e3d0bd9977b5e558046f7c');
+var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','1ba24d7f24b413a578c4e8e52309a8');
 var PLAID_ENV = envvar.string('PLAID_ENV', 'development');
 
 
@@ -60,9 +60,10 @@ app.get('/', function(request, response, next) {
 
 
 app.get('/:user_id', function(request, response, next) {
-  user_id = request.params.user_id;
+  if (!isNaN(request.params.user_id)) {
+      user_id = request.params.user_id;
+  }
   console.log("plaid user id: ", user_id);
-  console.log("request.params: ", request.params);
     response.render('plaid.ejs', {
         PLAID_PUBLIC_KEY: PLAID_PUBLIC_KEY,
         PLAID_ENV: PLAID_ENV,
@@ -92,10 +93,10 @@ app.post('/get_access_token', function(request, response, next) {
   });
 
 
-  app.post('/accounts', function(request, response, next) {
+  app.get('/accounts', function(request, response, next) {
     // Retrieve high-level account information and account and routing numbers
     // for each account associated with the Item.
-    client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
+    client.getAccounts(ACCESS_TOKEN, function(error, authResponse) {
       if (error != null) {
         var msg = 'Unable to pull accounts from the Plaid API.';
         console.log(msg + '\n' + error);
@@ -103,40 +104,42 @@ app.post('/get_access_token', function(request, response, next) {
           error: msg
         });
       }
+      //console.log(authResponse)
+      console.log(authResponse.accounts)
+      //database connection starts
+      var jsondata = authResponse.accounts;
+      var values = [];
+      console.log(">>>>>>>>>>",user_id)
+      for(var i=0; i< jsondata.length; i++)
+        {
+          
+        values.push([jsondata[i].account_id, jsondata[i].balances.available, jsondata[i].balances.current, jsondata[i].mask, jsondata[i].name, jsondata[i].subtype,jsondata[i].type, user_id] );
+        }
+      console.log("values",values);
+        
+        user_id = 6218;
+      connection.connect(function(err) {
+          if (err) throw err;
+        console.log("Connected!");
+        connection.query('INSERT INTO accountsPlaidTable (account_id, availablebalance, currentbalance, mask, name, subtype, type,user_id ) VALUES ?', [values], function(err,result) {
+          if (err) throw err;
+          console.log("successful for insert for transaction");
+          });
       
-      var accounts;
-      console.log(authResponse.accounts);
+      connection.query("SELECT * FROM accountsPlaidTable", function (err, result) {
+        if (err) throw err;
+         console.log("query successful");
+         console.log(result);
+     });
+     });
+      //database connnection end
+      
+  
       response.json({
         error: false,
         accounts: authResponse.accounts,
         numbers: authResponse.numbers,
       });
-      
-      
-      
-      
-      //database connection start
-    //   console.log("test data"+authResponse.accounts[0].name);   
-      
-    //   var jsondata = authResponse.accounts;
-    //   var values = [];
-      
-    //   for(var i=0; i< jsondata.length; i++)
-    //     values.push([, jsondata[i].account_id, jsondata[i].balances, jsondata[i].mask, jsondata[i].official_name, jsondata[i].subtype, jsondata[i].type ] );
-      
-    //   connection.connect(function(err) {
-    //     console.log("Connected!");
-    //     connection.query('INSERT INTO accountsTableTest (id, account_id, balances, mask, official_name, subtype, type) VALUES ?', [values], function(err,result) {
-    //             console.log("successful for insert");
-    //       });
-      
-    //   connection.query("SELECT * FROM accountsTableTest", function (err, result, fields) {
-    //     if (err) throw err;
-    //      console.log("query successful");
-    //      console.log(result);
-    //  });
-    //  });
-      //database connnection end
     });
   });
 
@@ -181,7 +184,7 @@ app.post('/item', function(request, response, next) {
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
 
-      user_id = request.params.user_id;
+      
       console.log("plaid transactions user id: ", user_id);
 
       client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
@@ -201,7 +204,7 @@ app.post('/item', function(request, response, next) {
             //database connection start            
             var jsondata = transactionsResponse.transactions;
             var values = [];
-            
+            console.log(">>>>>>>>>>",user_id)
             for(var i=0; i< jsondata.length; i++)
               {
               if(jsondata[i].category != null)
@@ -211,7 +214,7 @@ app.post('/item', function(request, response, next) {
                   values.push([jsondata[i].account_id, jsondata[i].amount, jsondata[i].date, jsondata[i].name, "other", jsondata[i].category_id,user_id]);
                 }
               }
-            console.log("values");
+            console.log("values",values);
 
             connection.connect(function(err) {
                 if (err) throw err;
