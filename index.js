@@ -93,7 +93,7 @@ app.post('/get_access_token', function(request, response, next) {
   });
 
 
-  app.get('/accounts', function(request, response, next) {
+  app.get('/:user_id/accounts', function(request, response, next) {
     // Retrieve high-level account information and account and routing numbers
     // for each account associated with the Item.
     client.getAccounts(ACCESS_TOKEN, function(error, authResponse) {
@@ -117,7 +117,7 @@ app.post('/get_access_token', function(request, response, next) {
         }
       console.log("values",values);
         
-        user_id = 6218;
+        
       connection.connect(function(err) {
           if (err) throw err;
         console.log("Connected!");
@@ -179,7 +179,7 @@ app.post('/item', function(request, response, next) {
 });
 
 
-  app.post('/transactions', function(request, response, next) {
+  app.post('/:user_id/transactions', function(request, response, next) {
     // Pull transactions for the Item for the last 30 days
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
@@ -216,9 +216,8 @@ app.post('/item', function(request, response, next) {
               }
             console.log("values",values);
 
-            connection.connect(function(err) {
-                if (err) throw err;
-              console.log("Connected!");
+      //      connection.connect(function(err) {
+              
               connection.query('INSERT INTO transactionsTable (account_id, amount, date, name, category,category_id, user_id ) VALUES ?', [values], function(err,result) {
                 if (err) throw err;
                 console.log("successful for insert for transaction");
@@ -229,7 +228,7 @@ app.post('/item', function(request, response, next) {
                console.log("query successful");
                console.log(result);
            });
-           });
+          // });
             //database connnection end
 
     });
