@@ -61,6 +61,7 @@ app.get('/', function(request, response, next) {
 
 app.get('/:user_id', function(request, response, next) {
   if (!isNaN(request.params.user_id)) {
+    console.log("user id is a number");
       user_id = request.params.user_id;
   }
   console.log("plaid user id: ", user_id);
@@ -184,7 +185,8 @@ app.post('/item', function(request, response, next) {
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
 
-      
+      // user_id = 90;//request.params.user_id;
+
       console.log("plaid transactions user id: ", user_id);
 
       client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
