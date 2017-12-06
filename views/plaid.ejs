@@ -140,7 +140,7 @@
           var errorHtml = '<div class="inner"><p>' +
            '<strong>' + data.error.error_code + ':</strong> ' +
            data.error.error_message + '</p></div>';
-
+            // may be it must be throwing the error here
           if (data.error.error_code === 'PRODUCT_NOT_READY') {
             // Add additional context for `PRODUCT_NOT_READY` errors
             errorHtml += '<div class="inner"><p>The PRODUCT_NOT_READY ' +

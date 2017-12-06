@@ -188,7 +188,7 @@ app.post('/item', function(request, response, next) {
       // user_id = 90;//request.params.user_id;
 
       console.log("plaid transactions user id: ", user_id);
-
+// may be it must be throwing the error here
       client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
       count: 250,
       offset: 0,
