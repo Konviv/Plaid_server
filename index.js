@@ -9,9 +9,9 @@ var mysql = require('mysql');
 
 // Begin Plaid code for configuration, initialization, and authentication
 var APP_PORT = envvar.number('APP_PORT', Number(process.env.PORT || 4001));
-var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','59d961ce4e95b833dcb75e3c');
-var PLAID_SECRET = envvar.string('PLAID_SECRET','3cd9b652e3d0bd9977b5e558046f7c');
-var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','1ba24d7f24b413a578c4e8e52309a8');
+var PLAID_CLIENT_ID = envvar.string('PLAID_CLIENT_ID','5a1da6be4e95b865a853bd76');
+var PLAID_SECRET = envvar.string('PLAID_SECRET','746b1e65ba8834b7403d4d4c71cd3a');
+var PLAID_PUBLIC_KEY = envvar.string('PLAID_PUBLIC_KEY','5865950586a1f0d28185e8087f1892');
 var PLAID_ENV = envvar.string('PLAID_ENV', 'development');
 
 
